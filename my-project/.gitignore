@@ -1,0 +1,68 @@
+# ==========================
+# uv / Python 专属规则
+# ==========================
+
+# uv 锁文件 (建议提交，确保依赖版本一致)
+# 注意：uv.lock 通常应该被提交到 Git，除非你明确希望每个开发者独立解析依赖
+# 如果你希望忽略它，请取消下面这行的注释：
+# uv.lock
+
+# Python 字节码/缓存文件
+__pycache__/
+*.py[cod]
+*$py.class
+*.pyo
+
+# uv 或 Python 创建的虚拟环境目录
+# uv 默认可能使用 .venv，也可能由用户指定其他名称
+.venv/
+venv/
+env/
+ENV/
+
+# 分发/打包产物 (如果使用 uv build)
+dist/
+build/
+*.egg-info/
+*.egg
+
+# 测试覆盖率报告
+htmlcov/
+.coverage
+.pytest_cache/
+.mypy_cache/
+
+# ==========================
+# 操作系统与 IDE 垃圾文件
+# ==========================
+
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Windows
+Thumbs.db
+Desktop.ini
+
+# Linux
+*~
+
+# IDE 配置 (根据团队习惯选择是否提交)
+# VSCode
+.vscode/
+# PyCharm/IntelliJ
+.idea/
+*.iml
+
+# ==========================
+# 敏感信息与环境变量
+# ==========================
+
+# 本地环境变量文件 (包含密钥，严禁提交)
+.env
+.env.local
+.env.*.local
+
+# 示例环境变量文件 (建议提交，作为模板)
+# !.env.example
