@@ -1,7 +1,7 @@
 from fastapi import FastAPI, Query, Path
 from enum import Enum
-from typing import Annotated
-from pydantic import AfterValidator
+from typing import Annotated, Literal
+from pydantic import AfterValidator, BaseModel, Field
 
 class ModelName(str, Enum):
     alexnet = "alexnet"
@@ -16,7 +16,13 @@ app = FastAPI(
     redoc_url=None,
     openapi_url="/openapi.json"
 )
-
+class FilterParams(BaseModel):
+    
+    model_config = {"extra": "forbid"}
+    limit: int = Field(100, gt=0, le=100)
+    offset: int=Field(0, ge=0)
+    order_by: Literal['created_at', 'updated_at'] = 'created_at'
+    tags: list[str] = []
 
 
 fake_db: dict[int, dict] = {1:{"name": "键盘"}, 2: {"name":"鼠标"}}
@@ -75,3 +81,28 @@ async def check(
     c: Annotated[str | None, AfterValidator(check)] = None
 ):
     return {"c": c}
+
+Page = Annotated[int, Query(ge=1, description="页码，从1开始")]
+PageSize = Annotated[int, Query(ge=1, le=100, description="每页显示的条数")]
+
+@app.get('/pages')
+async def getPages(
+    page: Page=1,
+    page_size: PageSize=20
+):
+    return {"page": page, "size": page_size}
+
+@app.get("/posts")
+async def list_posts(
+    tag: Annotated[list[str] | None, Query()]=None,
+    ids: Annotated[list[int], Query()]=[]
+):
+    return {"tag": tag, "ids": ids}
+
+
+
+@app.get("/filter")
+async def get_items(
+    filter_query: Annotated[FilterParams, Query()]
+):
+    return filter_query
