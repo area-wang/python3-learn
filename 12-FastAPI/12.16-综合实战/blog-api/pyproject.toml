@@ -1,0 +1,28 @@
+[project]
+name = "blog-api"
+version = "0.1.0"
+description = "FastAPI 综合实战：博客 API（用户 / 文章 / 标签 / 评论 / JWT 认证）"
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = [
+    "fastapi[standard]>=0.115",
+    "sqlalchemy>=2.0",
+    "pydantic-settings>=2.0",
+    "pyjwt>=2.8",
+    "pwdlib[argon2]>=0.2",
+]
+
+[dependency-groups]
+dev = [
+    "pytest>=8",
+    "httpx>=0.27",
+]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["."]
+addopts = "-q"
+
+[tool.fastapi]
+# 让 `fastapi dev` / `fastapi run` 不带参数也能找到应用
+entrypoint = "app.main:app"
